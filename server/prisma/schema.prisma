@@ -1,0 +1,119 @@
+// server/prisma/schema.prisma
+generator client { provider = "prisma-client-js" }
+datasource db { provider = "postgresql"; url = env("DATABASE_URL") }
+
+enum Availability { AVAILABLE MADE_TO_ORDER UNAVAILABLE }
+enum OrderStatus  { PENDING SOURCING CONFIRMED SHIPPED DELIVERED CANCELLED }
+enum PaymentMethod { COD INSTAPAY }
+enum PaymentStatus { UNPAID PENDING_VERIFICATION PAID REFUNDED FAILED }
+enum Role { ADMIN CUSTOMER }
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  phone     String?  @unique
+  name      String?
+  password  String
+  role      Role     @default(CUSTOMER)
+  addresses Address[]
+  orders    Order[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Address {
+  id           String  @id @default(cuid())
+  userId       String
+  user         User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  label        String?
+  name         String
+  phone        String
+  street       String
+  city         String
+  governorate  String
+  isDefault    Boolean @default(false)
+}
+
+model Category {
+  id       String    @id @default(cuid())
+  slug     String    @unique
+  nameEn   String
+  nameAr   String
+  image    String?
+  products Product[]
+}
+
+model Supplier {
+  id       String    @id @default(cuid())
+  name     String
+  contact  String?
+  notes    String?
+  products Product[]
+}
+
+model Product {
+  id            String       @id @default(cuid())
+  slug          String       @unique
+  nameEn        String
+  nameAr        String
+  descriptionEn String?
+  descriptionAr String?
+  price         Decimal      @db.Decimal(10, 2)
+  comparePrice  Decimal?     @db.Decimal(10, 2)
+  images        String[]
+  specs         Json?        // [{keyEn,keyAr,valueEn,valueAr}]
+  categoryId    String
+  category      Category     @relation(fields: [categoryId], references: [id])
+  supplierId    String?
+  supplier      Supplier?    @relation(fields: [supplierId], references: [id])
+  availability  Availability @default(AVAILABLE)
+  leadTimeDays  Int          @default(3)
+  isFeatured    Boolean      @default(false)
+  isPublished   Boolean      @default(false)
+  orderItems    OrderItem[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@index([categoryId])
+  @@index([availability])
+}
+
+model Order {
+  id             String        @id @default(cuid())
+  orderNumber    String        @unique
+  userId         String?
+  user           User?         @relation(fields: [userId], references: [id])
+  customerName   String
+  customerPhone  String
+  customerEmail  String?
+  addressStreet  String
+  addressCity    String
+  governorate    String
+  items          OrderItem[]
+  subtotal       Decimal       @db.Decimal(10, 2)
+  shippingFee    Decimal       @db.Decimal(10, 2)
+  total          Decimal       @db.Decimal(10, 2)
+  paymentMethod  PaymentMethod
+  paymentStatus  PaymentStatus @default(UNPAID)
+  instapayRef    String?
+  status         OrderStatus   @default(PENDING)
+  notes          String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([status])
+  @@index([customerPhone])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id])
+  nameEn    String
+  nameAr    String
+  image     String?
+  price     Decimal @db.Decimal(10, 2)
+  quantity  Int
+}
