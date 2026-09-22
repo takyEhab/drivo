@@ -1,4 +1,3 @@
-=== FILE: client/package.json ===
 {
   "name": "drivo-client",
   "private": true,

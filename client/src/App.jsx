@@ -1,9 +1,12 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { LangProvider } from "./context/LangContext";
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import RequireAdmin from "./components/layout/RequireAdmin";
+import AdminLayout from "./components/layout/AdminLayout";
+
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import Product from "./pages/Product";
@@ -11,11 +14,23 @@ import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
 import OrderSuccess from "./pages/OrderSuccess";
 import TrackOrder from "./pages/TrackOrder";
+
 import AdminLogin from "./pages/admin/Login";
 import AdminDashboard from "./pages/admin/Dashboard";
 import AdminProducts from "./pages/admin/Products";
+import AdminProductEdit from "./pages/admin/ProductEdit";
 import AdminOrders from "./pages/admin/Orders";
-import RequireAdmin from "./components/layout/RequireAdmin";
+import AdminOrderDetail from "./pages/admin/OrderDetail";
+
+function StorefrontLayout({ children }) {
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
+  );
+}
 
 export default function App() {
   return (
@@ -26,7 +41,7 @@ export default function App() {
             <Routes>
               <Route path="/admin/login" element={<AdminLogin />} />
               <Route
-                path="/admin/*"
+                path="/admin"
                 element={
                   <RequireAdmin>
                     <AdminLayout />
@@ -35,13 +50,15 @@ export default function App() {
               >
                 <Route index element={<AdminDashboard />} />
                 <Route path="products" element={<AdminProducts />} />
+                <Route path="products/:id" element={<AdminProductEdit />} />
                 <Route path="orders" element={<AdminOrders />} />
+                <Route path="orders/:id" element={<AdminOrderDetail />} />
               </Route>
+
               <Route
-                path="*"
+                path="/*"
                 element={
-                  <>
-                    <Header />
+                  <StorefrontLayout>
                     <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/shop" element={<Shop />} />
@@ -54,8 +71,7 @@ export default function App() {
                       />
                       <Route path="/track" element={<TrackOrder />} />
                     </Routes>
-                    <Footer />
-                  </>
+                  </StorefrontLayout>
                 }
               />
             </Routes>
