@@ -178,7 +178,6 @@ const products = [
     availability: "MADE_TO_ORDER",
     leadTimeDays: 7,
   },
-
   {
     slug: "led-strip-exterior",
     nameEn: "Exterior LED Strip",
@@ -285,6 +284,7 @@ async function main() {
       role: "ADMIN",
     },
   });
+  console.log(`✅ Admin: ${adminEmail}`);
 
   for (const c of categories) {
     await prisma.category.upsert({
@@ -293,16 +293,25 @@ async function main() {
       create: c,
     });
   }
+  console.log(`✅ Categories: ${categories.length}`);
 
   for (const p of products) {
+    const { category: categorySlug, ...rest } = p; // ← strip `category` key
     const cat = await prisma.category.findUnique({
-      where: { slug: p.category },
+      where: { slug: categorySlug },
     });
+    if (!cat) {
+      console.warn(
+        `⚠️  Skipping ${p.slug}: category "${categorySlug}" not found`,
+      );
+      continue;
+    }
+
     await prisma.product.upsert({
       where: { slug: p.slug },
       update: {},
       create: {
-        ...p,
+        ...rest, // ← no more `category` key
         categoryId: cat.id,
         isPublished: true,
         images: [
@@ -313,7 +322,13 @@ async function main() {
       },
     });
   }
-  console.log("✅ Seed complete");
+  console.log(`✅ Products: ${products.length}`);
 }
 
-main().finally(() => prisma.$disconnect());
+main()
+  .then(() => console.log("🎉 Seed complete"))
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(() => prisma.$disconnect());
