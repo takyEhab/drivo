@@ -1,0 +1,43 @@
+{
+  "nav": { "home": "Home", "shop": "Shop", "track": "Track Order", "cart": "Cart", "admin": "Admin" },
+  "home": {
+    "heroTitle": "Style Your Ride",
+    "heroSub": "Premium car accessories — sourced on demand, delivered across Egypt.",
+    "shopNow": "Shop Now",
+    "featured": "Featured",
+    "browseCategories": "Browse Categories"
+  },
+  "product": {
+    "available": "Available — ships in {{days}} business days",
+    "madeToOrder": "Made to order — ships in {{days}} days",
+    "unavailable": "Currently unavailable",
+    "addToCart": "Add to cart",
+    "outOfStock": "Unavailable",
+    "description": "Description",
+    "specs": "Specifications"
+  },
+  "cart": { "empty": "Your cart is empty", "subtotal": "Subtotal", "checkout": "Checkout", "remove": "Remove" },
+  "checkout": {
+    "title": "Checkout",
+    "fullName": "Full name",
+    "phone": "Phone",
+    "email": "Email",
+    "street": "Street address",
+    "city": "City",
+    "governorate": "Governorate",
+    "payment": "Payment method",
+    "cod": "Cash on Delivery",
+    "instapay": "InstaPay",
+    "instapayRef": "InstaPay reference number",
+    "instapayNote": "Transfer to {{handle}} then enter the reference number below.",
+    "placeOrder": "Place Order",
+    "shipping": "Shipping"
+  },
+  "order": {
+    "success": "Order placed!",
+    "number": "Order number",
+    "track": "Track Order",
+    "status": "Status"
+  },
+  "admin": { "login": "Admin Login", "dashboard": "Dashboard", "products": "Products", "orders": "Orders", "logout": "Logout" }
+}

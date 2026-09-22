@@ -1,0 +1,43 @@
+{
+  "nav": { "home": "الرئيسية", "shop": "المتجر", "track": "تتبع الطلب", "cart": "السلة", "admin": "الإدارة" },
+  "home": {
+    "heroTitle": "أضف لمسة على سيارتك",
+    "heroSub": "إكسسوارات سيارات مميزة — تُوفر حسب الطلب وتُشحن لكل مصر.",
+    "shopNow": "تسوق الآن",
+    "featured": "الأكثر تميزاً",
+    "browseCategories": "تصفح الأقسام"
+  },
+  "product": {
+    "available": "متوفر — الشحن خلال {{days}} أيام عمل",
+    "madeToOrder": "يُصنع حسب الطلب — الشحن خلال {{days}} أيام",
+    "unavailable": "غير متوفر حالياً",
+    "addToCart": "أضف إلى السلة",
+    "outOfStock": "غير متوفر",
+    "description": "الوصف",
+    "specs": "المواصفات"
+  },
+  "cart": { "empty": "سلتك فارغة", "subtotal": "المجموع", "checkout": "إتمام الطلب", "remove": "إزالة" },
+  "checkout": {
+    "title": "إتمام الطلب",
+    "fullName": "الاسم الكامل",
+    "phone": "الهاتف",
+    "email": "البريد الإلكتروني",
+    "street": "العنوان",
+    "city": "المدينة",
+    "governorate": "المحافظة",
+    "payment": "طريقة الدفع",
+    "cod": "الدفع عند الاستلام",
+    "instapay": "إنستاباي",
+    "instapayRef": "رقم عملية إنستاباي",
+    "instapayNote": "حوّل إلى {{handle}} ثم أدخل رقم العملية بالأسفل.",
+    "placeOrder": "تأكيد الطلب",
+    "shipping": "الشحن"
+  },
+  "order": {
+    "success": "تم استلام طلبك!",
+    "number": "رقم الطلب",
+    "track": "تتبع الطلب",
+    "status": "الحالة"
+  },
+  "admin": { "login": "دخول الإدارة", "dashboard": "لوحة التحكم", "products": "المنتجات", "orders": "الطلبات", "logout": "خروج" }
+}
