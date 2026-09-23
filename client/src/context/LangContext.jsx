@@ -11,13 +11,20 @@ export function LangProvider({ children }) {
   useEffect(() => {
     document.documentElement.lang = lang;
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
-    document.documentElement.classList.toggle("font-ar", lang === "ar");
     localStorage.setItem("drivo_lang", lang);
   }, [lang]);
 
-  const t = (path) =>
-    path.split(".").reduce((o, k) => o?.[k], dicts[lang]) ?? path;
+  const t = (path, vars) => {
+    const raw = path.split(".").reduce((o, k) => o?.[k], dicts[lang]);
+    let str = raw ?? path;
+    if (vars)
+      Object.entries(vars).forEach(([k, v]) => {
+        str = str.replace(`{{${k}}}`, v);
+      });
+    return str;
+  };
 
   return <Ctx.Provider value={{ lang, setLang, t }}>{children}</Ctx.Provider>;
 }
+
 export const useLang = () => useContext(Ctx);
